@@ -46,7 +46,6 @@ def ID_stamp():
         c.setFont('Courier-Bold', 14)
         c.drawString(15, (int(height)-20), text)
         c.save()
-    # possible fonts: ['Courier', 'Courier-Bold', 'Courier-BoldOblique', 'Courier-Oblique', 'Helvetica', 'Helvetica-Bold', 'Helvetica-BoldOblique', 'Helvetica-Oblique', 'Symbol', 'Times-Bold', 'Times-BoldItalic', 'Times-Italic', 'Times-Roman', 'ZapfDingbats']
     watermark = PdfFileReader(open("watermark.pdf", "rb"))
 
     #########
@@ -105,7 +104,3 @@ for child in root.winfo_children():
     child.grid_configure(padx=10,pady=10)
 
 root.mainloop()
-
-
-
-
