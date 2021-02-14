@@ -44,6 +44,7 @@ def ID_stamp():
         c.setFont('Courier-Bold', 14)
         c.drawString(15, (int(height)-20), text)
         c.save()
+
     watermark = PdfFileReader(open("watermark.pdf", "rb"))
 
     #########
