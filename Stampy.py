@@ -17,7 +17,6 @@ def get_input(root, display_text):
     l2=ttk.Label(root, text="English and numbers only please 🙂",font='Helvetica 12',foreground="#920", justify=LEFT).grid(row=3, column=col,stick="W",padx=20)
     e1 = Entry(root,textvariable = stamp_text,width=20, font=10,fg="blue",bd=3,selectbackground='violet')
     e1.grid(row=4, column=1,stick="N")
-
     return e1.get()
 
 def ID_stamp():
@@ -31,7 +30,6 @@ def ID_stamp():
     output_file = PdfFileWriter()
     input_file = PdfFileReader(open(file, "rb"))
     page_count = input_file.getNumPages()
-
 
     # get input dims
     (_,_,width,height)=input_file.getPage(0).mediaBox
