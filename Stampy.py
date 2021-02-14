@@ -42,7 +42,7 @@ def ID_stamp():
         #c.drawImage(picture_path, 15, 15)
     if text:
         c.setFontSize(22)
-        c.setFillColor('Red')
+        c.setFillColorRGB(255,0,255)
         c.setFont('Courier-Bold', 14)
         c.drawString(15, (int(height)-20), text)
         c.save()
@@ -92,7 +92,6 @@ button1=Button(root, text="Choose file", command=load1, font='Helvetica 14 bold'
 Label(root, textvariable=filename1,width=20).grid(row=1, column=1, sticky=(N,S,E,W))
 
 button2=Button(root, text="Stamp it", command=ID_stamp,font='Helvetica 14 bold', fg="red", height =4).grid(row=1, column=2,sticky=E)
-
 stamp=get_input(root,"Enter text to stamp")
 
 
