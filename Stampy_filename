@@ -29,6 +29,9 @@ def reverse(string):
     return string
 
 
+def is_hebrew(term):
+    return 'HEBREW' in unicodedata.name(term.strip()[0])
+
 def ID_stamp(file, text):
 
     if (file==None or text==None):
@@ -52,7 +55,9 @@ def ID_stamp(file, text):
         c.setFontSize(22)
         c.setFillColorRGB(255,0,255)
         c.setFont('Hebrew', 12)
-        c.drawString(15, (int(height)-20), u"{}".format(reverse(text)).encode('utf-8'))
+        if is_hebrew(text):
+            text=reverse(text)
+        c.drawString(15, (int(height)-20), u"{}".format(text).encode('utf-8'))
         c.save()
 
     watermark = PdfFileReader(open("watermark.pdf", "rb"))
