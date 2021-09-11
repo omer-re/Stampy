@@ -11,6 +11,8 @@ from reportlab.pdfbase.ttfonts import TTFont
 from reportlab.pdfbase import pdfmetrics
 pdfmetrics.registerFont(TTFont('Hebrew', 'Arial.ttf'))
 import tqdm
+import unicodedata
+
 
 from tkinter import filedialog
 import tkinter as tk
