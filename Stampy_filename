@@ -1,0 +1,100 @@
+# -*- coding: utf-8 -*-
+from PyPDF2 import PdfFileWriter, PdfFileReader
+import PyPDF2 as pypdf
+from reportlab.pdfgen import canvas
+import sys, os
+import time
+from functools import partial
+import fnmatch
+import winsound
+from reportlab.pdfbase.ttfonts import TTFont
+from reportlab.pdfbase import pdfmetrics
+pdfmetrics.registerFont(TTFont('Hebrew', 'Arial.ttf'))
+import tqdm
+
+from tkinter import filedialog
+import tkinter as tk
+
+
+def find_files(directory, pattern):
+    for root, dirs, files in os.walk(directory):
+        for basename in files:
+            if fnmatch.fnmatch(basename, pattern):
+                filename = os.path.join(root, basename)
+                yield filename
+
+# Function to reverse a string
+def reverse(string):
+    string = string[::-1]
+    return string
+
+
+def ID_stamp(file, text):
+
+    if (file==None or text==None):
+        print("Invalid input")
+    print("file path ={} \nStamp text= {}".format(text,text))
+    c = canvas.Canvas('watermark.pdf')
+    print("working")
+    output_file = PdfFileWriter()
+    input_file = PdfFileReader(open(file, "rb"),strict=False)
+    page_count = input_file.getNumPages()
+    print(page_count)
+
+    # get input dims
+    (_,_,width,height)=input_file.getPage(0).mediaBox
+
+    ######  Create new template with watermark ###
+    c = canvas.Canvas('watermark.pdf')
+    #if picture_path:
+        #c.drawImage(picture_path, 15, 15)
+    if text:
+        c.setFontSize(22)
+        c.setFillColorRGB(255,0,255)
+        c.setFont('Hebrew', 12)
+        c.drawString(15, (int(height)-20), u"{}".format(reverse(text)).encode('utf-8'))
+        c.save()
+
+    watermark = PdfFileReader(open("watermark.pdf", "rb"))
+
+    #########
+    output_path = file.split('.pdf')[0] + '_stamped' + '.pdf'
+    for page_number in range(page_count):
+        input_page = input_file.getPage(page_number)
+        input_page.mergePage(watermark.getPage(0))
+        output_file.addPage(input_page)
+
+
+    #print(output_path)
+    with open(output_path, "wb") as outputStream:
+        output_file.write(outputStream)
+    time.sleep(1)
+    print("Done working")
+
+def resource_path(relative_path):
+    if hasattr(sys, '_MEIPASS'):
+        return os.path.join(sys._MEIPASS, relative_path)
+    return os.path.join(os.path.abspath("."), relative_path)
+
+
+
+if __name__ == "__main__":
+    # Add more options if you like
+    path = filedialog.askdirectory()
+
+    #path=input("enter path: ")
+    # get all files list
+    tree_walk_list = []
+    for pdffile in find_files(path, '*.pdf'):
+        tree_walk_list.append(pdffile)
+    # get filename of each
+    for pdffile in tqdm.tqdm(tree_walk_list):
+        stamp_text = os.path.basename(pdffile[:-4])
+        print(stamp_text)
+        ID_stamp(pdffile,stamp_text)
+    # stamp it.
+
+    winsound.Beep(800,1000)
+    winsound.Beep(500,1000)
+    winsound.Beep(700,1000)
+    print("DONE")
